@@ -3,13 +3,11 @@
 One-page static site for Idea SM Project Ltd (Cyprus): https://ideasmproject.com
 No build step. Plain HTML, CSS and a little JavaScript.
 
-## Before publishing: set the contact email
-The placeholder `info@ideasmproject.com` appears in three places. Replace all three with the real address:
-1. `index.html`, near the end, in the script: `const CONTACT_EMAIL = "..."`. This one sets the visible address and where the contact form is delivered.
-2. `index.html`, in the `application/ld+json` block near the top: `"email": "..."`.
+## Contact email
+The contact email is `denissokolov@me.com`. To change it, edit all three places, or run `./set-email.sh new@address.com`:
+1. `index.html`, end of the file, in the script: `const CONTACT_EMAIL = "..."` (visible address and form delivery).
+2. `index.html`, top, in the `application/ld+json` block: `"email": "..."`.
 3. `llms.txt`: the `Email:` line.
-
-Or run one command: `./set-email.sh you@example.com`
 
 ## Contact form
 Submissions are sent by FormSubmit (formsubmit.co) to `CONTACT_EMAIL`. On the first submission FormSubmit emails an
