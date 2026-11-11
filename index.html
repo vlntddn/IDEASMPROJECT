@@ -24,6 +24,7 @@
  {"@type":"Event","name":"Disgusting Food","description":"New exhibition opening in Vilnius, Lithuania.","startDate":"2026-12-26","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Vilnius, Lithuania","address":{"@type":"PostalAddress","addressLocality":"Vilnius","addressCountry":"LT"}},"image":"https://ideasmproject.com/img/og.jpg","organizer":{"@id":"https://ideasmproject.com/#org"}}
 ]}
 </script>
+<link rel="preload" as="image" href="img/hero-1.webp" imagesrcset="img/hero-1-900.webp 900w, img/hero-1.webp 1400w" imagesizes="100vw" fetchpriority="high">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="alternate icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230b2545'/%3E%3Cpath d='M18 46V30a14 14 0 0 1 28 0v16z' fill='none' stroke='%23fff' stroke-width='4'/%3E%3C/svg%3E">
@@ -72,11 +73,12 @@ header nav a:not(.btn):hover{color:var(--blue)}
 .btn.light:hover{background:#e6eefa;color:var(--ink)}
 .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.8)}
 .btn.ghost:hover{background:rgba(255,255,255,.14)}
-.slides{position:absolute;inset:0;z-index:-1;overflow:hidden;background:var(--ink)}
+.slides{position:absolute;inset:0;z-index:-1;overflow:hidden;background:linear-gradient(135deg,#0b2545 0%,#164a96 100%)}
 .slides::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,26,52,.88) 0%,rgba(8,26,52,.66) 45%,rgba(8,26,52,.25) 100%);pointer-events:none}
 .slide{position:absolute;inset:0;margin:0;opacity:0;transition:opacity 1.4s ease;pointer-events:none}
 .slide.on{opacity:1}
-.slide img{width:100%;height:100%;object-fit:cover;display:block}
+.slide img{width:100%;height:100%;object-fit:cover;display:block;color:transparent;font-size:0}
+.slide img[data-failed]{visibility:hidden}
 .dots{position:absolute;z-index:2;left:0;right:0;bottom:62px;display:flex;justify-content:center;gap:4px}
 .dots button{width:30px;height:30px;border:0;background:none;padding:0;cursor:pointer;position:relative}
 .dots button::after{content:"";position:absolute;left:50%;top:50%;width:26px;height:4px;margin:-2px 0 0 -13px;border-radius:2px;background:rgba(255,255,255,.45)}
@@ -211,9 +213,9 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <main id="top">
 <div class="hero">
   <div class="slides" role="group" aria-roledescription="carousel" aria-label="Museum interiors">
-    <figure class="slide on"><img src="img/hero-1.webp" alt="Interior of a museum hall with a cast-iron and glass roof and dinosaur skeletons" style="object-position:50% 45%" width="1400" height="1000" decoding="async"></figure>
-    <figure class="slide"><img src="img/hero-2.webp" alt="Glass-roofed great court of a museum with visitors" style="object-position:50% 40%" width="1400" height="1000" decoding="async"></figure>
-    <figure class="slide"><img src="img/hero-3.webp" alt="Grand museum staircase beneath tall arches" style="object-position:50% 50%" width="1400" height="1000" decoding="async"></figure>
+    <figure class="slide on"><img src="img/hero-1.webp" srcset="img/hero-1-900.webp 900w, img/hero-1.webp 1400w" sizes="100vw" alt="Interior of a museum hall with a cast-iron and glass roof and dinosaur skeletons" style="object-position:50% 45%" width="1400" height="842" fetchpriority="high" decoding="async"></figure>
+    <figure class="slide"><img data-srcset="img/hero-2-900.webp 900w, img/hero-2.webp 1280w" data-src="img/hero-2.webp" sizes="100vw" alt="Glass-roofed great court of a museum with visitors" style="object-position:50% 40%" width="1400" height="1000" decoding="async"></figure>
+    <figure class="slide"><img data-srcset="img/hero-3-900.webp 900w, img/hero-3.webp 1400w" data-src="img/hero-3.webp" sizes="100vw" alt="Grand museum staircase beneath tall arches" style="object-position:50% 50%" width="1400" height="1000" decoding="async"></figure>
     <div class="dots"><button type="button" aria-label="Show image 1" aria-current="true"></button><button type="button" aria-label="Show image 2"></button><button type="button" aria-label="Show image 3"></button></div>
   </div>
   <div class="wrap">
@@ -324,15 +326,44 @@ form.addEventListener("submit", async e => {
   } finally { btn.disabled = false; }
 });
 
-/* hero slideshow */
+/* hero slideshow: resilient image loading */
 (function(){
   const box=document.querySelector(".slides"); if(!box) return;
   const slides=[...box.querySelectorAll(".slide")], dots=[...box.querySelectorAll(".dots button")];
+  const bad=new Set();
   let i=0, timer=null;
-  const show=n=>{ i=(n+slides.length)%slides.length; slides.forEach((s,k)=>s.classList.toggle("on",k===i)); dots.forEach((d,k)=>d.toggleAttribute("aria-current",k===i)); dots.forEach((d,k)=>{ if(k===i) d.setAttribute("aria-current","true"); else d.removeAttribute("aria-current"); }); };
-  const start=()=>{ stop(); if(matchMedia("(prefers-reduced-motion: reduce)").matches) return; timer=setInterval(()=>show(i+1),5500); };
+
+  /* retry a failed image up to 3 times, then drop that slide from the rotation */
+  const watch=img=>{
+    let tries=0;
+    img.addEventListener("error",()=>{
+      tries++;
+      if(tries>3){ img.setAttribute("data-failed",""); bad.add(slides.indexOf(img.closest(".slide"))); return; }
+      setTimeout(()=>{
+        const base=(img.getAttribute("data-src")||img.getAttribute("src")||"").split("?")[0];
+        img.removeAttribute("srcset"); img.src=base+"?r="+tries+Date.now();
+      },700*tries);
+    });
+  };
+  slides.forEach(s=>watch(s.querySelector("img")));
+
+  /* first image loads with the page; the others load once the page has finished */
+  const loadRest=()=>slides.forEach(s=>{
+    const im=s.querySelector("img[data-src]"); if(!im) return;
+    if(im.dataset.srcset) im.srcset=im.dataset.srcset;
+    im.src=im.dataset.src;
+  });
+  if(document.readyState==="complete") loadRest(); else addEventListener("load",loadRest);
+
+  const show=n=>{
+    i=(n+slides.length)%slides.length;
+    slides.forEach((s,k)=>s.classList.toggle("on",k===i));
+    dots.forEach((d,k)=>{ if(k===i) d.setAttribute("aria-current","true"); else d.removeAttribute("aria-current"); });
+  };
+  const next=()=>{ for(let k=1;k<=slides.length;k++){ const n=(i+k)%slides.length; if(!bad.has(n)){ show(n); return; } } };
+  const start=()=>{ stop(); if(matchMedia("(prefers-reduced-motion: reduce)").matches) return; timer=setInterval(next,5500); };
   const stop=()=>{ clearInterval(timer); timer=null; };
-  dots.forEach((d,k)=>d.addEventListener("click",()=>{ show(k); start(); }));
+  dots.forEach((d,k)=>d.addEventListener("click",()=>{ if(bad.has(k)) return; show(k); start(); }));
   box.addEventListener("mouseenter",stop); box.addEventListener("mouseleave",start);
   box.addEventListener("focusin",stop); box.addEventListener("focusout",start);
   document.addEventListener("visibilitychange",()=>document.hidden?stop():start());
