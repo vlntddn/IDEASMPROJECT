@@ -12,8 +12,10 @@
 <meta property="og:title" content="Idea SM Project Ltd (Cyprus) — Exhibitions and museums worldwide">
 <meta property="og:description" content="We invest in, develop and launch exhibitions and museums worldwide. Next opening: Disgusting Food, Vilnius, 21 December.">
 <meta property="og:url" content="https://ideasmproject.com/">
-<meta property="og:image" content="https://ideasmproject.com/img/og.jpg">
+<meta property="og:image" content="https://ideasmproject.com/img/og-share.jpg">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Idea SM Project Ltd, Cyprus. Development of exhibitions and museums.">
+<meta name="twitter:image" content="https://ideasmproject.com/img/og-share.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable summary">
 <script type="application/ld+json">
@@ -21,10 +23,10 @@
  {"@type":"Organization","@id":"https://ideasmproject.com/#org","name":"Idea SM Project Ltd","legalName":"Idea SM Project Ltd","alternateName":"Idea SM Project","address":{"@type":"PostalAddress","addressCountry":"CY"},"foundingLocation":{"@type":"Place","name":"Cyprus"},"url":"https://ideasmproject.com/","logo":"https://ideasmproject.com/logo.svg","email":"denissokolov@me.com","description":"Idea SM Project Ltd is a company registered in Cyprus that invests in, develops and launches exhibitions and museums worldwide, including immersive exhibitions, permanent museums and touring shows.","areaServed":"Worldwide","knowsAbout":["Exhibition investment","Museum development","Immersive exhibitions","Touring exhibitions","Cultural venues","Educational venues"]},
  {"@type":"WebSite","@id":"https://ideasmproject.com/#website","url":"https://ideasmproject.com/","name":"Idea SM Project","publisher":{"@id":"https://ideasmproject.com/#org"},"inLanguage":"en"},
  {"@type":"WebPage","@id":"https://ideasmproject.com/#page","url":"https://ideasmproject.com/","name":"Idea SM Project Ltd (Cyprus) — Exhibitions and museums worldwide","isPartOf":{"@id":"https://ideasmproject.com/#website"},"about":{"@id":"https://ideasmproject.com/#org"},"inLanguage":"en"},
- {"@type":"Event","name":"Disgusting Food Museum Vilnius","url":"https://disgustingfoodmuseum.lt/","description":"Opening in Vilnius, Lithuania.","startDate":"2026-12-21","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Vilnius, Lithuania","address":{"@type":"PostalAddress","addressLocality":"Vilnius","addressCountry":"LT"}},"image":"https://ideasmproject.com/img/og.jpg","organizer":{"@id":"https://ideasmproject.com/#org"}}
+ {"@type":"Event","name":"Disgusting Food Museum Vilnius","url":"https://disgustingfoodmuseum.lt/","description":"Opening in Vilnius, Lithuania.","startDate":"2026-12-21","eventStatus":"https://schema.org/EventScheduled","eventAttendanceMode":"https://schema.org/OfflineEventAttendanceMode","location":{"@type":"Place","name":"Vilnius, Lithuania","address":{"@type":"PostalAddress","addressLocality":"Vilnius","addressCountry":"LT"}},"image":"https://ideasmproject.com/img/og-share.jpg","organizer":{"@id":"https://ideasmproject.com/#org"}}
 ]}
 </script>
-<link rel="preload" as="image" href="img/hero.webp" imagesrcset="img/hero-900.webp 900w, img/hero.webp 1400w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" href="img/hero-gallery.webp" imagesrcset="img/hero-gallery-900.webp 900w, img/hero-gallery.webp 1600w" imagesizes="100vw" fetchpriority="high">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
@@ -152,7 +154,6 @@ form .btn{justify-self:start} form .btn[disabled]{opacity:.6;cursor:wait}
 
 footer{padding:30px 0;font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.credit{font-size:12px;flex-basis:100%;order:3}
 
 /* tablet */
 @media (max-width:960px){
@@ -170,7 +171,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   header .wrap{height:62px} html{scroll-padding-top:62px}
   header nav a:not(.btn){display:none}
   .hero{min-height:560px;padding:56px 0 110px}
-  .slides::after{background:linear-gradient(180deg,rgba(8,26,52,.7) 0%,rgba(8,26,52,.84) 100%)}
+  .slides::after{background:linear-gradient(180deg,rgba(8,26,52,.5) 0%,rgba(8,26,52,.55) 55%,rgba(8,26,52,.7) 100%)}
   .hero p.lead{font-size:17px;margin:18px 0 26px}
   .next .bar{grid-template-columns:1fr;gap:16px;padding:24px 20px;transform:translateY(-44px);margin:0 0 -44px}
   .next .date{border-right:0;border-bottom:1px solid var(--line);padding:0 0 14px}
@@ -210,7 +211,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <main id="top">
 <div class="hero">
   <div class="slides">
-    <img src="img/hero.webp" srcset="img/hero-900.webp 900w, img/hero.webp 1400w" sizes="100vw" alt="Bright exhibition hall with white timber beams, a tree branch overhead and a hand-drawn black-and-white room" style="object-position:50% 45%" width="1400" height="932" fetchpriority="high" decoding="async">
+    <img src="img/hero-gallery.webp" srcset="img/hero-gallery-900.webp 900w, img/hero-gallery.webp 1600w" sizes="100vw" alt="Dark exhibition gallery with coloured walls, a large circular lens installation and illuminated objects on plinths" style="object-position:50% 50%" width="1600" height="1062" fetchpriority="high" decoding="async">
   </div>
   <div class="wrap">
     <div class="txt">
@@ -277,7 +278,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </div></section>
 </main>
 
-<footer><div class="wrap"><span>© <span id="y"></span> Idea SM Project Ltd, registered in Cyprus.</span><span class="credit">Photograph: Museum of Illusions Vilnius.</span><a href="#top">Back to top</a></div></footer>
+<footer><div class="wrap"><span>© <span id="y"></span> Idea SM Project Ltd, registered in Cyprus.</span><a href="#top">Back to top</a></div></footer>
 
 <script>
 /* ---- Configuration ---- */
@@ -333,7 +334,7 @@ form.addEventListener("submit", async e => {
   img.addEventListener("error",()=>{
     tries++;
     if(tries>3){ img.setAttribute("data-failed",""); return; }
-    setTimeout(()=>{ img.removeAttribute("srcset"); img.src="img/hero.webp?r="+tries+Date.now(); },700*tries);
+    setTimeout(()=>{ img.removeAttribute("srcset"); img.src="img/hero-gallery.webp?r="+tries+Date.now(); },700*tries);
   });
 })();
 </script>
