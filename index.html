@@ -309,14 +309,20 @@ form.addEventListener("submit", async e => {
     say("Opening your email app…", "ok"); return;
   }
   btn.disabled = true; say("Sending…");
+  let reason = "";
   try {
     const r = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ ...d, _subject: "Website enquiry from " + d.name, _template: "table" }) });
-    if (!r.ok) throw new Error(r.status);
-    const j = await r.json().catch(() => ({}));
-    if (j.success === "false" || j.success === false) throw new Error(j.message || "rejected");
+    let j = {}; try { j = await r.json(); } catch (_) {}
+    if (!r.ok || j.success === "false" || j.success === false) { reason = j.message || ("HTTP " + r.status); throw new Error(reason); }
     form.reset(); say("Thank you! We'll be in touch soon.", "ok");
-  } catch {
-    say("Could not send. Please email " + CONTACT_EMAIL + " directly.", "err");
+  } catch (err) {
+    if (!reason) reason = (err && err.message) || "network error";
+    console.warn("Form not sent:", reason);
+    const body = `${d.message}\n\n— ${d.name}${d.organization ? ", " + d.organization : ""} (${d.role})\n${d.email}`;
+    const mail = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Website enquiry from " + d.name)}&body=${encodeURIComponent(body)}`;
+    statusEl.className = "err";
+    statusEl.textContent = "Could not send (" + reason + "). Please email ";
+    const a = document.createElement("a"); a.href = mail; a.textContent = CONTACT_EMAIL; statusEl.appendChild(a); statusEl.append(".");
   } finally { btn.disabled = false; }
 });
 
