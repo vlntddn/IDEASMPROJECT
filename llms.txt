@@ -17,6 +17,7 @@
 - Project: Disgusting Food Museum Vilnius
 - Date: 21 December 2026
 - Place: Vilnius, Lithuania
+- Website: https://disgustingfoodmuseum.lt/
 
 ## Contact
 - Website: https://ideasmproject.com/
